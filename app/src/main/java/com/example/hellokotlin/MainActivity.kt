@@ -2,29 +2,32 @@ package com.example.hellokotlin
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.hellokotlin.R
+import com.example.hellokotlin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val editText = findViewById<EditText>(R.id.editTextNumber)
-        val textView = findViewById<TextView>(R.id.textViewDisplay)
-        val buttonOkay = findViewById<Button>(R.id.buttonOkay)
-        val buttonNext = findViewById<Button>(R.id.buttonNext)
-
-        buttonOkay.setOnClickListener {
-            val enteredNumber = editText.text.toString()
-            textView.text = "your number is $enteredNumber"
+        binding.okayButton.setOnClickListener {
+            val email = binding.emailEditText.text.toString()
+            if (email.isNotEmpty()) {
+                Toast.makeText(this, "Welcome back, $email", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+            }
         }
 
-        buttonNext.setOnClickListener {
-            val intent = Intent(this, SecondActivity::class.java)
+        binding.nextButton.setOnClickListener {
+            val email = binding.emailEditText.text.toString()
+            val intent = Intent(this, CounterActivity::class.java)
+            intent.putExtra("email", email)
             startActivity(intent)
         }
     }
